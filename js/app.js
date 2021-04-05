@@ -340,13 +340,12 @@ function visualize(theData) {
 
         xMinMax();
 
-        // Update the domain of x.
         xScale.domain([xMin, xMax]);
 
-        // Now use a transition when we update the xAxis.
+        // transition when we update the xAxis.
         svg.select(".xAxis").transition().duration(300).call(xAxis);
 
-        // With the axis changed, let's update the location of the state circles.
+        // update location of the state circles.
         d3.selectAll("circle").each(function() {
           d3
             .select(this)
@@ -357,7 +356,7 @@ function visualize(theData) {
             .duration(300);
         });
 
-        // We need change the location of the state texts, too.
+        // Change the location of the state texts, too.
         d3.selectAll(".stateText").each(function() {
           // We give each state text the same motion tween as the matching circle.
           d3
@@ -373,24 +372,18 @@ function visualize(theData) {
         labelChange(axis, self);
       }
       else {
-        // When y is the saved axis, execute this:
-        // Make curY the same as the data name.
+    
         curY = name;
 
-        // Change the min and max of the y-axis.
         yMinMax();
 
-        // Update the domain of y.
         yScale.domain([yMin, yMax]);
 
         // Update Y Axis
         svg.select(".yAxis").transition().duration(300).call(yAxis);
 
-        // With the axis changed, let's update the location of the state circles.
+        // location of the state circles.
         d3.selectAll("circle").each(function() {
-          // Each state circle gets a transition for it's new attribute.
-          // This will lend the circle a motion tween
-          // from it's original spot to the new location.
           d3
             .select(this)
             .transition()
@@ -400,9 +393,7 @@ function visualize(theData) {
             .duration(300);
         });
 
-        // We need change the location of the state texts, too.
         d3.selectAll(".stateText").each(function() {
-          // We give each state text the same motion tween as the matching circle.
           d3
             .select(this)
             .transition()
@@ -419,26 +410,23 @@ function visualize(theData) {
   });
 
   // Part 5: Mobile Responsive
-  // =========================
-  // With d3, we can call a resize function whenever the window dimensions change.
-  // This make's it possible to add true mobile-responsiveness to our charts.
   d3.select(window).on("resize", resize);
 
   // One caveat: we need to specify what specific parts of the chart need size and position changes.
   function resize() {
-    // Redefine the width, height and leftTextY (the three variables dependent on the width of the window).
+    // width, height and leftTextY (the three variables dependent on the width of the window).
     width = parseInt(d3.select("#scatter").style("width"));
     height = width - width / 3.9;
     leftTextY = (height + labelArea) / 2 - labelArea;
 
-    // Apply the width and height to the svg canvas.
+    //  Width and height to the svg canvas.
     svg.attr("width", width).attr("height", height);
 
-    // Change the xScale and yScale ranges
+    // xScale and yScale ranges
     xScale.range([margin + labelArea, width - margin]);
     yScale.range([height - margin - labelArea, margin]);
 
-    // With the scales changes, update the axes (and the height of the x-axis)
+    // Update the axes (and the height of the x-axis)
     svg
       .select(".xAxis")
       .call(xAxis)
@@ -455,8 +443,6 @@ function visualize(theData) {
 
     // Update the radius of each dot.
     crGet();
-
-    // With the axis changed, let's update the location and radius of the state circles.
     d3
       .selectAll("circle")
       .attr("cy", function(d) {
@@ -468,8 +454,6 @@ function visualize(theData) {
       .attr("r", function() {
         return circRadius;
       });
-
-    // We need change the location and size of the state texts, too.
     d3
       .selectAll(".stateText")
       .attr("dy", function(d) {
@@ -480,4 +464,4 @@ function visualize(theData) {
       })
       .attr("r", circRadius / 3);
   }
-}
+}//Marcus GUerrier.
