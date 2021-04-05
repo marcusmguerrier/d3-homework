@@ -253,9 +253,7 @@ function visualize(theData) {
   }
   tickCount();
 
-  // We append the axes in group elements. By calling them, we include
-  // all of the numbers, borders and ticks.
-  // The transform attribute specifies where to place the axes.
+ 
   svg
     .append("g")
     .call(xAxis)
@@ -267,13 +265,10 @@ function visualize(theData) {
     .attr("class", "yAxis")
     .attr("transform", "translate(" + (margin + labelArea) + ", 0)");
 
-  // Now let's make a grouping for our dots and their labels.
+  //grouping for our dots and their labels.
   var theCircles = svg.selectAll("g theCircles").data(theData).enter();
-
-  // We append the circles for each row of data (or each state, in this case).
   theCircles
     .append("circle")
-    // These attr's specify location, size and class.
     .attr("cx", function(d) {
       return xScale(d[curX]);
     })
@@ -284,11 +279,9 @@ function visualize(theData) {
     .attr("class", function(d) {
       return "stateCircle " + d.abbr;
     })
-    // Hover rules
     .on("mouseover", function(d) {
-      // Show the tooltip
+      // tooltip
       toolTip.show(d, this);
-      // Highlight the state circle's border
       d3.select(this).style("stroke", "#323232");
     })
     .on("mouseout", function(d) {
@@ -333,31 +326,18 @@ function visualize(theData) {
       d3.select("." + d.abbr).style("stroke", "#e3e3e3");
     });
 
-  // Part 4: Make the Graph Dynamic
-  // ==========================
-  // This section will allow the user to click on any label
-  // and display the data it references.
-
-  // Select all axis text and add this d3 click event.
+  // Part 4: Make Graph Dynamic
   d3.selectAll(".aText").on("click", function() {
-    // Make sure we save a selection of the clicked text,
-    // so we can reference it without typing out the invoker each time.
+    .
     var self = d3.select(this);
 
-    // We only want to run this on inactive labels.
-    // It's a waste of the processor to execute the function
-    // if the data is already displayed on the graph.
     if (self.classed("inactive")) {
-      // Grab the name and axis saved in label.
       var axis = self.attr("data-axis");
       var name = self.attr("data-name");
 
-      // When x is the saved axis, execute this:
       if (axis === "x") {
-        // Make curX the same as the data name.
         curX = name;
 
-        // Change the min and max of the x-axis
         xMinMax();
 
         // Update the domain of x.
@@ -368,9 +348,6 @@ function visualize(theData) {
 
         // With the axis changed, let's update the location of the state circles.
         d3.selectAll("circle").each(function() {
-          // Each state circle gets a transition for it's new attribute.
-          // This will lend the circle a motion tween
-          // from it's original spot to the new location.
           d3
             .select(this)
             .transition()
