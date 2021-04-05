@@ -14,7 +14,7 @@ var labelArea = 110;
 var tPadBot = 40;
 var tPadLeft = 40;
 
-// Create the actual canvas for the graph (Thx Solution)
+// Create the actual canvas for the graph (Thx The Boot Camp Youtube Video)
 var svg = d3
   .select("#scatter")
   .append("svg")
@@ -41,14 +41,12 @@ crGet();
 // A) Bottom Axis
 // ==============
 
-// We create a group element to nest our bottom axes labels.
+// Group element to nest our bottom axes labels.
 svg.append("g").attr("class", "xText");
-// xText will allows us to select the group without excess code.
+// xText 
 var xText = d3.select(".xText");
 
-// We give xText a transform property that places it at the bottom of the chart.
-// By nesting this attribute in a function, we can easily change the location of the label group
-// whenever the width of the window changes.
+// transform property
 function xTextRefresh() {
   xText.attr(
     "transform",
@@ -61,7 +59,6 @@ function xTextRefresh() {
 }
 xTextRefresh();
 
-// Now we use xText to append three text SVG files, with y coordinates specified to space out the values.
 // 1. Poverty
 xText
   .append("text")
@@ -90,19 +87,17 @@ xText
 // B) Left Axis
 // ============
 
-// Specifying the variables like this allows us to make our transform attributes more readable.
+// Specifying  variables.
 var leftTextX = margin + tPadLeft;
 var leftTextY = (height + labelArea) / 2 - labelArea;
 
-// We add a second label group, this time for the axis left of the chart.
+// second label group
 svg.append("g").attr("class", "yText");
 
 // yText will allows us to select the group without excess code.
 var yText = d3.select(".yText");
 
-// Like before, we nest the group's transform attr in a function
-// to make changing it on window change an easy operation.
-function yTextRefresh() {
+// Transform Nesting
   yText.attr(
     "transform",
     "translate(" + leftTextX + ", " + leftTextY + ")rotate(-90)"
@@ -150,27 +145,19 @@ d3.csv("assets/data/data.csv").then(function(data) {
   visualize(data);
 });
 
-// 3. Create our visualization function
+// Visualization
 // ====================================
-// We called a "visualize" function on the data obtained with d3's .csv method.
-// This function handles the visual manipulation of all elements dependent on the data.
+// 
 function visualize(theData) {
-  // PART 1: Essential Local Variables and Functions
-  // =================================
-  // curX and curY will determine what data gets represented in each axis.
-  // We designate our defaults here, which carry the same names
-  // as the headings in their matching .csv data file.
+.
   var curX = "poverty";
   var curY = "obesity";
-
-  // We also save empty variables for our the min and max values of x and y.
-  // this will allow us to alter the values in functions and remove repetitious code.
   var xMin;
   var xMax;
   var yMin;
   var yMax;
 
-  // This function allows us to set up tooltip rules (see d3-tip.js).
+  // ToolTip Rules
   var toolTip = d3
     .tip()
     .attr("class", "d3-tip")
@@ -178,56 +165,41 @@ function visualize(theData) {
     .html(function(d) {
       // x key
       var theX;
-      // Grab the state name.
+      // State name.
       var theState = "<div>" + d.state + "</div>";
-      // Snatch the y value's key and value.
       var theY = "<div>" + curY + ": " + d[curY] + "%</div>";
-      // If the x key is poverty
       if (curX === "poverty") {
-        // Grab the x key and a version of the value formatted to show percentage
         theX = "<div>" + curX + ": " + d[curX] + "%</div>";
       }
       else {
         // Otherwise
-        // Grab the x key and a version of the value formatted to include commas after every third digit.
         theX = "<div>" +
           curX +
           ": " +
           parseFloat(d[curX]).toLocaleString("en") +
           "</div>";
       }
-      // Display what we capture.
+      // Display
       return theState + theX + theY;
     });
   // Call the toolTip function.
   svg.call(toolTip);
 
-  // PART 2: D.R.Y!
-  // ==============
-  // These functions remove some repitition from later code.
-  // This will be more obvious in parts 3 and 4.
-
-  // a. change the min and max for x
+  // min and max for x
   function xMinMax() {
-    // min will grab the smallest datum from the selected column.
     xMin = d3.min(theData, function(d) {
       return parseFloat(d[curX]) * 0.90;
     });
-
-    // .max will grab the largest datum from the selected column.
     xMax = d3.max(theData, function(d) {
       return parseFloat(d[curX]) * 1.10;
     });
   }
 
-  // b. change the min and max for y
+  // min and max for y
   function yMinMax() {
-    // min will grab the smallest datum from the selected column.
     yMin = d3.min(theData, function(d) {
       return parseFloat(d[curY]) * 0.90;
     });
-
-    // .max will grab the largest datum from the selected column.
     yMax = d3.max(theData, function(d) {
       return parseFloat(d[curY]) * 1.10;
     });
@@ -235,7 +207,6 @@ function visualize(theData) {
 
   // c. change the classes (and appearance) of label text when clicked.
   function labelChange(axis, clickedText) {
-    // Switch the currently active to inactive.
     d3
       .selectAll(".aText")
       .filter("." + axis)
@@ -243,21 +214,16 @@ function visualize(theData) {
       .classed("active", false)
       .classed("inactive", true);
 
-    // Switch the text just clicked to active.
     clickedText.classed("inactive", false).classed("active", true);
   }
 
-  // Part 3: Instantiate the Scatter Plot
-  // ====================================
-  // This will add the first placement of our data and axes to the scatter plot.
+  // Instantiate the Scatter Plot
 
-  // First grab the min and max values of x and y.
   xMinMax();
   yMinMax();
 
-  // With the min and max values now defined, we can create our scales.
-  // Notice in the range method how we include the margin and word area.
-  // This tells d3 to place our circles in an area starting after the margin and word area.
+  //create our scales. (thx Youtube Vid)
+
   var xScale = d3
     .scaleLinear()
     .domain([xMin, xMax])
