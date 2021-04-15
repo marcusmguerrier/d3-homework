@@ -102,7 +102,6 @@ var yText = d3.select(".yText");
     "transform",
     "translate(" + leftTextX + ", " + leftTextY + ")rotate(-90)"
   );
-}
 yTextRefresh();
 
 // Now we append the text.
@@ -149,14 +148,13 @@ d3.csv("assets/data/data.csv").then(function(data) {
 // ====================================
 // 
 function visualize(theData) {
-.
   var curX = "poverty";
   var curY = "obesity";
   var xMin;
   var xMax;
   var yMin;
   var yMax;
-
+}
   // ToolTip Rules
   var toolTip = d3
     .tip()
@@ -330,7 +328,6 @@ function visualize(theData) {
   d3.selectAll(".aText").on("click", function() {
     .
     var self = d3.select(this);
-
     if (self.classed("inactive")) {
       var axis = self.attr("data-axis");
       var name = self.attr("data-name");
